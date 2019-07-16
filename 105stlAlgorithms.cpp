@@ -1,6 +1,6 @@
 // https://www.youtube.com/watch?v=bFSnXNIsK4A&t=242s
 
-// #include "stdafx.h" // for VS only
+// #include "stdafx.h" // for VS
 #include <iostream>
 #include <algorithm>
 #include <vector>
@@ -302,6 +302,7 @@ int main()
 
     //sets
     print("*** Sets ***");
+    // set_differences
     std::vector<int> set_1{2,4,1,4,2,5,6,4,4,4};
     std::cout << "The vectors are" << std::endl;
     std::sort(begin(set_1),end(set_1));
@@ -311,8 +312,38 @@ int main()
     show_vector(set_1);
     show_vector(set_2);
     std::cout << "The difference from the first one is :" << std::endl;
-    std::set_difference(begin(set_1),end(set_1),begin(set_2),end(set_2),v5.begin());
+    std::set_difference(begin(set_1),end(set_1),begin(set_2),end(set_2),v5.begin()); // only whats in set_1 but not in set_2
     show_vector(v5);
+    // set_intersection
+    std::vector<int> v6(set_1.size());
+    std::cout << "The common elements are :" << std::endl;
+    std::set_intersection(begin(set_1),end(set_1),begin(set_2),end(set_2),v6.begin()); // only whats in set_1 but not in set_2
+    show_vector(v6);
+    // set_union
+    std::vector<int> v7(set_1.size());
+    std::cout << "All the elements are :" << std::endl;
+    std::set_union(begin(set_1),end(set_1),begin(set_2),end(set_2),v7.begin()); // only whats in set_1 but not in set_2
+    show_vector(v7);
+    // set_symmetric_differences
+    std::vector<int> v8(set_1.size());
+    std::cout << "All the elements, except common ones are :" << std::endl;
+    std::set_symmetric_difference(begin(set_1),end(set_1),begin(set_2),end(set_2),v8.begin()); // only whats in set_1 but not in set_2
+    show_vector(v8);
+    // includes
+    std::cout << "If the sets are subsets : " ;
+    std::cout << std::includes(begin(set_1),end(set_1),begin(set_2),end(set_2)) << std::endl;
+    // merge
+    std::vector<int> v9(set_1.size());
+    std::cout << "If the sets are merged : " ;
+    std::merge(begin(set_1),end(set_1),begin(set_2),end(set_2), v9.begin());
+    show_vector(v9);
+
+    // movers
+    print("*** Movers ***");
+
+
+
+
 
 
 
@@ -328,7 +359,6 @@ int main()
 
 
 /*
-
 
 * The vector before modifying  *
 3 5 2 5 1 6 7 8 4 6 3 5 3 5 3
@@ -465,6 +495,8 @@ The vectors are
 1 2 2 2 3 4 5 5 5 7
 The difference from the first one is :
 4 4 4 4 6 0 0 0 0 0
-
+The common elements are :
+1 2 2 4 5 0 0 0 0 0
+All the elements are :
 
 */
