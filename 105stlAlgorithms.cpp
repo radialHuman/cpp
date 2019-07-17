@@ -29,6 +29,12 @@ void show_vector(std::vector<int> v1)
     std::cout << std::endl;
 }
 
+int func_gene()
+{
+    static int i = 1;
+    return i++;
+}
+
 int main()
 {
     // for_each has a problem of mutating
@@ -100,6 +106,7 @@ int main()
 
     // other algorithms that move elements inside the container
     // rotate
+    // iota
     std::iota(begin(v1), end(v1), 1);
     print("*** Rotating the elements inside the container ***");
     std::cout << "Before rotating  : ";
@@ -319,11 +326,11 @@ int main()
     std::cout << "The common elements are :" << std::endl;
     std::set_intersection(begin(set_1),end(set_1),begin(set_2),end(set_2),v6.begin()); // only whats in set_1 but not in set_2
     show_vector(v6);
-    // set_union
-    std::vector<int> v7(set_1.size());
-    std::cout << "All the elements are :" << std::endl;
-    std::set_union(begin(set_1),end(set_1),begin(set_2),end(set_2),v7.begin()); // only whats in set_1 but not in set_2
-    show_vector(v7);
+    // set_union (kills the whole thing)
+//    std::vector<int> v7(set_1.size());
+//    std::cout << "All the elements are :" << std::endl;
+//    std::set_union(begin(set_1),end(set_1),begin(set_2),end(set_2),v7.begin()); // only whats in set_1 but not in set_2
+//    show_vector(v7);
     // set_symmetric_differences
     std::vector<int> v8(set_1.size());
     std::cout << "All the elements, except common ones are :" << std::endl;
@@ -340,13 +347,146 @@ int main()
 
     // movers
     print("*** Movers ***");
+    // copy
+    std::cout << "* Coping the vectors *" << std::endl;
+    std::vector<int> v10(v9.size());
+    std::copy(begin(v9), end(v9), begin(v10));
+    show_vector(v10);
+    // move
+    std::cout << "* Coping the vectors *" << std::endl;
+    std::vector<int> v11(v10.size());
+    std::move(begin(v10), end(v10), begin(v11));
+    std::cout << "Before moving : ";
+    show_vector(v10);
+    std::cout << "After moving : "; //  ?? why is it not deleting
+    show_vector(v10);
+    std::cout << "New vector : ";
+    show_vector(v11);
+    // swap ranges
+    std::vector<int> v12{0,0,0,1,1,1,0,0,0};
+    std::cout << "Vector one : ";
+    show_vector(v12);
+    std::vector<int> v13{0,0,0,0,0,0,0,0,0};
+    std::cout << "Vector two : ";
+    show_vector(v13);
+    std::cout <<"After swapping : \n";
+    std::swap_ranges(begin(v12), end(v12),begin(v13));
+    std::cout << "Vector one : ";
+    show_vector(v12);
+    std::cout << "Vector two : ";
+    show_vector(v13);
+    // copy_backwards
+    std::cout << "* To copy the first few elements few positions down, since forward will miss data *\n";
+    std::copy_backward(begin(v12),end(v12),end(v13));
+    std::cout << "Vector to be copied from : ";
+    show_vector(v12);
+    std::cout << "Vector to be copied to : ";
+    show_vector(v13);
+    std::cout <<"After copying : \n";
+    std::swap_ranges(begin(v12), end(v12),begin(v13));
+    show_vector(v13);
+
+    // value modifiers
+    print("*** Algorithms that changes the value in vector ***");
+    // fill
+    std::cout <<"* Fill *\n";
+    std::cout << "Vector to be filled : ";
+    show_vector(v13);
+    std::cout <<"After filling : \n";
+    std::fill(begin(v13),end(v13),100);
+    show_vector(v13);
+    // generate
+    std::cout <<"* Generate *\n";
+    std::cout << "Vector to be filled using a fucntion for each element : ";
+    show_vector(v13);
+    std::cout <<"After Generating : \n";
+    std::fill(begin(v13),end(v13),func_gene()); // not sure how to use lambda here??
+    show_vector(v13);
+    // iota
+    std::cout <<"* Replace *\n";
+    std::cout << "Vector element to be replaced : ";
+    show_vector(v13);
+    std::cout <<"After replacing : \n";
+    std::replace(begin(v13),end(v13),1,2);
+    show_vector(v13);
+    // generate
+
+    // structure changers
+    print("** Structure changers ***");
+    // remove and erase
+    std::cout <<"* Remove *\n";
+    std::cout << "Vector element to be removed : ";
+    v13.push_back(10);
+    show_vector(v13);
+    std::cout <<"After removing : \n";
+    v13.erase(std::remove(begin(v13),end(v13),2),end(v13)); // removes and erases unwanted elements, will be modified since it is big
+    show_vector(v13);
+    //unique
+    std::cout <<"* Unique *\n";
+    std::cout << "Vector element to be removed : ";
+    v13.push_back(2);
+    v13.push_back(2);
+    v13.push_back(3);
+    show_vector(v13);
+    std::cout <<"After unique : \n";
+    v13.erase(std::unique(begin(v13),end(v13)), end(v13));
+    show_vector(v13);
 
 
+    // _copy
+    // This will do the action and put it in a new vector
+    /*
+     * remove_copy
+     * unique_copy
+     * reverse_copy
+     * rotate_copy
+     * replace_copy
+     * partition_copy
+     * partial_sort_copy
+     */
+
+    // _if
+    // this will accept a condition and perform the action
+    /*
+     * find_if
+     * find_if_not
+     * count_if
+     * remove_if
+     * remove_copy_if
+     * replace_if
+     * replace_copy_if
+     * copy_if
+     */
+
+    // transform in c++17
+    // for_each is for side effects
+
+    // raw memory
+    // to avoid making constructor, follow with std::destroy
+    /*
+     * uninitialized_copy
+     * uninitialized_fill
+     * uninitialized_move
+     *
+     */
 
 
+    // _n
+    // take a begin and a size to which action is performed
+    /*
+     * copy_n
+     * fill_n
+     * generate_n
+     * search_n
+     * for each_n
+     * uninitialized_copy_n
+     * uninitialized_fill_n
+     * uninitialized_move_n
+     * destroy_n
+     */
 
 
-
+    // check out boost algorithm //
 
 
 
@@ -497,6 +637,54 @@ The difference from the first one is :
 4 4 4 4 6 0 0 0 0 0
 The common elements are :
 1 2 2 4 5 0 0 0 0 0
-All the elements are :
+All the elements, except common ones are :
+2 3 4 4 4 4 5 5 6 7
+If the sets are subsets : 0
+If the sets are merged : 1 1 2 2 2 2 2 3 4 4
+
+
+*** Movers ***
+* Coping the vectors *
+1 1 2 2 2 2 2 3 4 4
+* Coping the vectors *
+Before moving : 1 1 2 2 2 2 2 3 4 4
+After moving : 1 1 2 2 2 2 2 3 4 4
+New vector : 1 1 2 2 2 2 2 3 4 4
+Vector one : 0 0 0 1 1 1 0 0 0
+Vector two : 0 0 0 0 0 0 0 0 0
+After swapping :
+Vector one : 0 0 0 0 0 0 0 0 0
+Vector two : 0 0 0 1 1 1 0 0 0
+* To copy the first few elements few positions down, since forward will miss data *
+Vector to be copied from : 0 0 0 0 0 0 0 0 0
+Vector to be copied to : 0 0 0 0 0 0 0 0 0
+After copying :
+0 0 0 0 0 0 0 0 0
+
+
+*** Algorithms that changes the value in vector ***
+* Fill *
+Vector to be filled : 0 0 0 0 0 0 0 0 0
+After filling :
+100 100 100 100 100 100 100 100 100
+* Generate *
+Vector to be filled using a fucntion for each element : 100 100 100 100 100 100 100 100 100
+After Generating :
+1 1 1 1 1 1 1 1 1
+* Replace *
+Vector element to be replaced : 1 1 1 1 1 1 1 1 1
+After replacing :
+2 2 2 2 2 2 2 2 2
+
+
+** Structure changers ***
+* Remove *
+Vector element to be removed : 2 2 2 2 2 2 2 2 2 10
+After removing :
+10
+* Unique *
+Vector element to be removed : 10 2 2 3
+After unique :
+10 2 3
 
 */
